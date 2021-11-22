@@ -3,7 +3,7 @@
 # Desc: Working with classes and functions.
 # Change Log: (Who, When, What)
 # DBiesinger, 2030-Jan-01, Created File
-# TODO Evan Malina, 2021-Nov-21, Updated file to remove to-dos, add ____
+# TODO Evan Malina, 2021-Nov-21, Updated file to add, delete, write CD data 
 #------------------------------------------#
 
 # -- DATA -- #
@@ -16,49 +16,50 @@ objFile = None  # file object
 
 # -- PROCESSING -- #
 class DataProcessor:
-    # TODO add functions for processing here
+    # TODOne add functions for processing here
     """Functions I added for processing CD data into a table"""
     @staticmethod
-    def input_CD(strNum, strCDTitle, str_Artist):
+    def input_CD(strNum, strCDTitle, str_Artist, table):
         """Function to add inputs into table
         
         Args:
             strNum (string): First input is the ID number
             strCDTitle (string): Second input is album Title
             str_Artist (string): 3rd input is album artist (TYPO)
+            table (list): current inventory list of dictionaries
             
         Returns:
-            lstTbl (list): a list of dictionaries of CD entries 
+            table (list): a list of dictionaries of CD entries 
         """
         intID = int(strNum) #convert string to integer
         dicRow = {'ID': intID, 'Title': strCDTitle, 'Artist': str_Artist}
-        lstTbl.append(dicRow)
-        return lstTbl
+        table.append(dicRow)
+        return table
     
     @staticmethod
-    def delete_CD(delID, lstTbl):
+    def delete_CD(delNum, table):
         """Function to find and delete a specific ID from inventory
         Args:
-            delID (int): ID to delete from inventory
-            lstTbl (list): cd inventory table
+            delNum (int): ID to delete from inventory
+            table (list): cd inventory table
             
         Returns:
-            lstTbl (list): cd inventory table
+            table (list): cd inventory table
     
         """
         intRowNr = -1
         blnCDRemoved = False
-        for row in lstTbl:
+        for row in table:
             intRowNr += 1
-            if row['ID'] == delID:
-                del lstTbl[intRowNr]
+            if row['ID'] == delNum:
+                del table[intRowNr]
                 blnCDRemoved = True
                 break
         if blnCDRemoved:
             print('The CD was removed')
         else:
             print('Could not find this CD!')
-        return lstTbl
+        return table
 
                
 class FileProcessor:
@@ -88,7 +89,7 @@ class FileProcessor:
 
     @staticmethod
     def write_file(file_name, table):
-        # TODO Add code here
+        # TODone Add code here
         """Function to save the CD to file
         Args:
             file_name (str): file name for saving
@@ -102,7 +103,6 @@ class FileProcessor:
             lstValues[0] = str(lstValues[0])
             objFile.write(','.join(lstValues) + '\n')
         objFile.close()
-        pass
 
 
 # -- PRESENTATION (Input/Output) -- #
@@ -167,14 +167,15 @@ class IO:
         Args: none
             
         Returns: tuple of 3;
-        strID (int): ID number
-        strTitle (str): CD title
-        stArtist (str): CD artist
+        var1 (int): ID number
+        var2 (str): CD title
+        var3 (str): CD artist
         """
-        strID = input('Enter ID: ').strip()
-        strTitle = input('What is the CD\'s title? ').strip()
-        stArtist = input('What is the Artist\'s name? ').strip()
-        return(strID, strTitle, stArtist)
+        print('Please enter a new CD ID, Title and Artist')
+        var1 = input('Enter ID: ').strip()
+        var2 = input('What is the CD\'s title? ').strip()
+        var3 = input('What is the Artist\'s name? ').strip()
+        return(var1, var2, var3)
 
 
     
@@ -207,11 +208,10 @@ while True:
     elif strChoice == 'a':
         # 3.3.1 Ask user for new ID, CD Title and Artist
         # TODOne move IO code into function
-        print('Please enter a new CD ID, Title and Artist')
         strID, strTitle, stArtist = IO.add_data()
         # 3.3.2 Add item to the table
         # TODOne move processing code into function
-        DataProcessor.input_CD(strID, strTitle, stArtist)
+        DataProcessor.input_CD(strID, strTitle, stArtist, lstTbl)
         IO.show_inventory(lstTbl)
         continue  # start loop back at top.
     # 3.4 process display current inventory
